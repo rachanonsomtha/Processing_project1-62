@@ -1,6 +1,6 @@
 Table table;
 PImage mapImg;
-int zoom = 1;
+int zoom = 3;
 float cx, cy;
 float lat, lon;
 float x_orig, y_orig, x_dest, y_dest, lat_orig, lon_orig, lat_dest, lon_dest;
@@ -13,10 +13,10 @@ String url;
 
 float c_lat = 53.0;
 float c_lon = -113.0;
-float c_lon_temp;
-float c_lat_temp;
+float c_lon_temp = 50;
+float c_lat_temp = -99;
 
-int count;
+int count =20;
 
 boolean _isInit = true;
 
@@ -41,17 +41,17 @@ void setup() {
   size (1024, 512);
   table = new Table();
 
-  if (c_lon < - width/2) {
-    c_lon_temp += c_lon +width;
-  } else if (c_lon > width / 2) {
-    c_lon_temp -= c_lon- width;
-  }
+  //if (c_lon < - width/2) {
+  //  c_lon_temp += c_lon +width;
+  //} else if (c_lon > width / 2) {
+  //  c_lon_temp -= c_lon- width;
+  //}
 
-  if (c_lat < - height/2) {
-    c_lat_temp += c_lat +height;
-  } else if (c_lat > height / 2) {
-    c_lat_temp -= c_lat- height;
-  }
+  //if (c_lat < - height/2) {
+  //  c_lat_temp += c_lat +height;
+  //} else if (c_lat > height / 2) {
+  //  c_lat_temp -= c_lat- height;
+  //}
   cx = mercX(c_lon_temp);
   cy = mercX(c_lat_temp);
   println("Zoom level: " + zoom + "Latitude: " + c_lat_temp + "Longitude: " + c_lon_temp);
@@ -79,16 +79,22 @@ void keyPressed() {
   if (key =='d') {
     c_lat_temp += 10/zoom;
   }
-  if (key =='w') {
+  if (key =='w' ) {
     c_lon_temp += 10/zoom;
   }  
   if (key =='s') {
     c_lon_temp -= 10/zoom;
   }
+  if (key == 'o') {
+    count += 10;
+  }
+    if (key == 'z') {
+    zoom = 1;
+  }
   cx = mercX(c_lat_temp);
   cy = mercY(c_lon_temp);
 
-  println("Zoom level: " + zoom + "Latitude: " + c_lat_temp + "Longitude: " + c_lon_temp);
+  println("Zoom level: " + zoom + "Latitude: " + c_lat_temp + "Longitude: " + c_lon_temp + "Count: " +count);
   url ="https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/"+c_lat_temp +","+c_lon_temp+"+"+"," +zoom +","+"0,0/1024x512?access_token=pk.eyJ1IjoicmFjaGFub24iLCJhIjoiY2szMm1jMWd0MGR5cjNpbm9obXI0MXN2NSJ9.X4wUXhYDgDP_Rvcf2hq7eA";
   mapImg = loadImage(url, "png");
 
@@ -101,7 +107,6 @@ void draw() {
 
   translate(width / 2, height / 2);
   imageMode(CENTER);
-  count= 100; // number of row getting
 
   table = loadTable("truck1week.csv", "header");
   if (_isInit) {
@@ -181,7 +186,7 @@ void draw() {
     //line(x_orig, y_orig, x_dest, y_dest);
 
     ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
-    fill(255, 0, 255, 200);
+    fill(255, 0, 255, 200); 
 
     ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
   }
