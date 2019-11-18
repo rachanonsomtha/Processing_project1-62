@@ -29,6 +29,8 @@ class Truck {
   }
 
   void update () {
+
+    x_orig += 1;
   }
 
 

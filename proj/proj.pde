@@ -4,9 +4,9 @@ int zoom = 3;
 float cx, cy;
 float lat, lon;
 float x_orig, y_orig, x_dest, y_dest, lat_orig, lon_orig, lat_dest, lon_dest;
-int count = 50;
+int count = 10;
 
-int screenW = 512;
+int screenW = 1024;
 int screenH = 512;
 
 Truck [] truck = new Truck[count];
@@ -104,8 +104,46 @@ void keyPressed() {
   //Truck [] truck = ()
 
   if (key == 'z') {
-    zoom = 1;
+
+    zoom = 3;
+    redraw();
   }
+  
+  for (int i =0; i< count; i++) {
+      //data fetching
+      //if (i <=count) {
+      TableRow row = table.getRow(i);    
+      String date_orig = row.getString("date_orig");
+      String date_dest = row.getString("date_dest");
+
+      String time_orig = row.getString("time_orig");
+      String time_dest = row.getString("time_dest");
+
+      //use this lat long
+      lat_orig = row.getFloat("Latitude_orig");
+      lat_dest = row.getFloat("Latitude_dest");
+
+      lon_orig = row.getFloat("Longitude_orig");
+      lon_dest = row.getFloat("Longitude_dest");
+
+      cx = mercX(c_lat_temp);
+      cy = mercY(c_lon_temp);
+
+      x_orig = mercX(lon_orig) - cx;
+      y_orig = mercY(lat_orig) - cy;
+
+
+      x_dest = mercX(lon_dest) - cx;
+      y_dest = mercY(lat_dest) - cy;
+
+      //truck[i] = (x_orig, y_orig, x_dest, y_dest, zoom);
+
+      //print("eiei");
+
+
+      //println(x, y);
+      //println(time_orig);
+    }
 
   cx = mercX(c_lat_temp);
   cy = mercY(c_lon_temp);
@@ -130,45 +168,48 @@ void draw() {
 
 
 
-  //if (_isInit) {
-  image(mapImg, 0, 0);
-  for (int i =0; i< count; i++) {
-    //data fetching
-    //if (i <=count) {
-    TableRow row = table.getRow(i);    
-    String date_orig = row.getString("date_orig");
-    String date_dest = row.getString("date_dest");
+  if (_isInit) {
 
-    String time_orig = row.getString("time_orig");
-    String time_dest = row.getString("time_dest");
+    for (int i =0; i< count; i++) {
+      //data fetching
+      //if (i <=count) {
+      TableRow row = table.getRow(i);    
+      String date_orig = row.getString("date_orig");
+      String date_dest = row.getString("date_dest");
 
-    //use this lat long
-    lat_orig = row.getFloat("Latitude_orig");
-    lat_dest = row.getFloat("Latitude_dest");
+      String time_orig = row.getString("time_orig");
+      String time_dest = row.getString("time_dest");
 
-    lon_orig = row.getFloat("Longitude_orig");
-    lon_dest = row.getFloat("Longitude_dest");
+      //use this lat long
+      lat_orig = row.getFloat("Latitude_orig");
+      lat_dest = row.getFloat("Latitude_dest");
 
-    cx = mercX(c_lat_temp);
-    cy = mercY(c_lon_temp);
+      lon_orig = row.getFloat("Longitude_orig");
+      lon_dest = row.getFloat("Longitude_dest");
 
-    x_orig = mercX(lon_orig) - cx;
-    y_orig = mercY(lat_orig) - cy;
+      cx = mercX(c_lat_temp);
+      cy = mercY(c_lon_temp);
 
-
-    x_dest = mercX(lon_dest) - cx;
-    y_dest = mercY(lat_dest) - cy;
-
-    truck[i] = new Truck(x_orig, y_orig, x_dest, y_dest, zoom);
-
-    //print("eiei");
+      x_orig = mercX(lon_orig) - cx;
+      y_orig = mercY(lat_orig) - cy;
 
 
-    //println(x, y);
-    //println(time_orig);
+      x_dest = mercX(lon_dest) - cx;
+      y_dest = mercY(lat_dest) - cy;
+
+      truck[i] = new Truck(x_orig, y_orig, x_dest, y_dest, zoom);
+
+      //print("eiei");
+
+
+      //println(x, y);
+      //println(time_orig);
+    }
+    image(mapImg, 0, 0);
+    _isInit = false;
   }
-  //_isInit = false;
-  //}
+  image(mapImg, 0, 0);
+
   for (int i =0; i<truck.length; i++) {
     truck[i].display();
     truck[i].update();
