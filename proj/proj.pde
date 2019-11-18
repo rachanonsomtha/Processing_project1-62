@@ -4,7 +4,10 @@ int zoom = 3;
 float cx, cy;
 float lat, lon;
 float x_orig, y_orig, x_dest, y_dest, lat_orig, lon_orig, lat_dest, lon_dest;
-int count = 5;
+int count = 50;
+
+int screenW = 512;
+int screenH = 512;
 
 Truck [] truck = new Truck[count];
 
@@ -16,8 +19,8 @@ String url;
 
 float c_lat = 53.0;
 float c_lon = -113.0;
-float c_lon_temp = 50;
-float c_lat_temp = -99;
+float c_lon_temp = 53;
+float c_lat_temp = -110;
 
 
 boolean _isInit = true;
@@ -42,7 +45,8 @@ float mercY(float lat) {
 void setup() {
 
 
-  size (1024, 512);
+  //size (1024, 512);
+  surface.setSize(screenW, screenH);
   table = new Table();
 
   //if (c_lon < - width/2) {
@@ -60,7 +64,7 @@ void setup() {
   cy = mercX(c_lat_temp);
   println("Zoom level: " + zoom + "Latitude: " + c_lat_temp + "Longitude: " + c_lon_temp);
 
-  url ="https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/"+c_lat_temp +","+c_lon_temp+"," +zoom +","+"0,0/1024x512?access_token=pk.eyJ1IjoicmFjaGFub24iLCJhIjoiY2szMm1jMWd0MGR5cjNpbm9obXI0MXN2NSJ9.X4wUXhYDgDP_Rvcf2hq7eA";
+  url ="https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/"+c_lat_temp +","+c_lon_temp+"," +zoom +","+"0,0/"+screenW+"x"+screenH+"?access_token=pk.eyJ1IjoicmFjaGFub24iLCJhIjoiY2szMm1jMWd0MGR5cjNpbm9obXI0MXN2NSJ9.X4wUXhYDgDP_Rvcf2hq7eA";
   mapImg = loadImage(url, "png");
   //image(mapImg, 0, 0);
 }
@@ -94,7 +98,7 @@ void keyPressed() {
   //count += 10;
   //SomeClass[] items = (SomeClass[]) append(originalArray, element)
   if (key == 'o') {
-    truck = (Truck[])append(truck, new Truck(x_orig, y_orig, x_dest, y_dest));
+    truck = (Truck[])append(truck, new Truck(x_orig, y_orig, x_dest, y_dest, zoom));
   }
 
   //Truck [] truck = ()
@@ -102,14 +106,16 @@ void keyPressed() {
   if (key == 'z') {
     zoom = 1;
   }
+
   cx = mercX(c_lat_temp);
   cy = mercY(c_lon_temp);
 
   //println("Zoom level: " + zoom + "Latitxude: " + c_lat_temp + "Longitude: " + c_lon_temp + "Count: " +count);
-  url ="https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/"+c_lat_temp +","+c_lon_temp+"+"+"," +zoom +","+"0,0/1024x512?access_token=pk.eyJ1IjoicmFjaGFub24iLCJhIjoiY2szMm1jMWd0MGR5cjNpbm9obXI0MXN2NSJ9.X4wUXhYDgDP_Rvcf2hq7eA";
+  url ="https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/"+c_lat_temp +","+c_lon_temp+"+"+"," +zoom +","+"0,0/"+screenW+"x"+screenH+"?access_token=pk.eyJ1IjoicmFjaGFub24iLCJhIjoiY2szMm1jMWd0MGR5cjNpbm9obXI0MXN2NSJ9.X4wUXhYDgDP_Rvcf2hq7eA";
   mapImg = loadImage(url, "png");
 
   image(mapImg, 0, 0);
+
   //line(x_orig, y_orig, x_dest, y_dest);
 }
 
@@ -125,6 +131,7 @@ void draw() {
 
 
   //if (_isInit) {
+  image(mapImg, 0, 0);
   for (int i =0; i< count; i++) {
     //data fetching
     //if (i <=count) {
@@ -142,6 +149,9 @@ void draw() {
     lon_orig = row.getFloat("Longitude_orig");
     lon_dest = row.getFloat("Longitude_dest");
 
+    cx = mercX(c_lat_temp);
+    cy = mercY(c_lon_temp);
+
     x_orig = mercX(lon_orig) - cx;
     y_orig = mercY(lat_orig) - cy;
 
@@ -149,17 +159,21 @@ void draw() {
     x_dest = mercX(lon_dest) - cx;
     y_dest = mercY(lat_dest) - cy;
 
-    truck[i] = new Truck(x_orig, y_orig, x_dest, y_dest);
-          truck[i].display();
-          truck[i].update();
-          print("eiei");
+    truck[i] = new Truck(x_orig, y_orig, x_dest, y_dest, zoom);
+
+    //print("eiei");
 
 
     //println(x, y);
     //println(time_orig);
   }
-
-
+  //_isInit = false;
   //}
+  for (int i =0; i<truck.length; i++) {
+    truck[i].display();
+    truck[i].update();
+    //print("eeeeee");
+  }  
+
   //}
 }

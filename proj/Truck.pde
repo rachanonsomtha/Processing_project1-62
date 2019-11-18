@@ -1,12 +1,14 @@
 class Truck {
 
   float x_orig, y_orig, x_dest, y_dest;
+  int zoom;
 
-  Truck (float _x_orig, float _y_orig, float _x_dest, float _y_dest) {
+  Truck (float _x_orig, float _y_orig, float _x_dest, float _y_dest, int _zoom) {
     x_orig = _x_orig;
     y_orig = _y_orig;
     x_dest = _x_dest;
     y_dest = _y_dest;
+    zoom = _zoom;
   }
 
 
@@ -17,18 +19,16 @@ class Truck {
 
     fill(255, 255, 50, 200);
     stroke(255, 0, 255);
-    strokeWeight(0.3);
-    //line(x_orig, y_orig, x_dest, y_dest);
+    strokeWeight(5/(zoom/0.8));
+    line(x_orig, y_orig, x_dest, y_dest);
 
     ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
-    fill(255, 0, 255, 200); 
+    //    fill(255, 0, 255, 200); 
 
     ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
   }
 
   void update () {
-
-    x_orig+= 1 ;
   }
 
 
