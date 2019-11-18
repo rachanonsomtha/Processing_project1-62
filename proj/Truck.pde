@@ -11,6 +11,11 @@ class Truck {
   int sec, min, hour;
   int _sec, _min, _hour;
 
+  PImage start;
+  PImage finish;
+
+
+
 
   Truck (float _lat_orig, float _lat_dest, float _lon_orig, float _lon_dest, int _zoom, float _c_lat_temp, float _c_lon_temp, String _time_orig
     , int hour_orig, int min_orig, int sec_orig, String _time_dest, int hour_dest, int min_dest, int sec_dest) {
@@ -32,6 +37,9 @@ class Truck {
     _sec = sec_dest;
     _min = min_dest;
     _hour = hour_dest;
+
+    start = loadImage("start.png");
+    finish = loadImage("racing-flag.png");
     //println(hour + " "+ min +" " + sec);
   }
 
@@ -44,12 +52,16 @@ class Truck {
       fill(255, 255, 50, 200);
       stroke(255, 255, 255);
       strokeWeight(5/(zoom/0.8));
-      ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
+      //ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
+      image(start, x_orig, y_orig, 6*zoom, 6*zoom);
     }
     if (checkTime_dest(parseInt(split(time_dest, ":")[0]), parseInt(split(time_dest, ":")[1]), parseInt(split(time_dest, ":")[2]))) {
       line(x_orig, y_orig, x_dest, y_dest);
       fill(255, 0, 255, 200);  //puple
-      ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
+      //ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
+     
+      image(finish, x_dest, y_dest, 6*zoom, 6*zoom);
+      //rotate(
     }
   }
 
