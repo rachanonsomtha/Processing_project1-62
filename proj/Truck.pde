@@ -11,14 +11,13 @@ class Truck {
   int sec, min, hour;
   int _sec, _min, _hour;
 
+  int day_orig, day_dest;
   PImage start;
   PImage finish;
 
 
-
-
   Truck (float _lat_orig, float _lat_dest, float _lon_orig, float _lon_dest, int _zoom, float _c_lat_temp, float _c_lon_temp, String _time_orig
-    , int hour_orig, int min_orig, int sec_orig, String _time_dest, int hour_dest, int min_dest, int sec_dest) {
+    , int hour_orig, int min_orig, int sec_orig, String _time_dest, int hour_dest, int min_dest, int sec_dest, int _day_orig, int _day_dest) {
     lat_orig = _lat_orig;
     lon_orig = _lon_orig;
     lat_dest = _lat_dest;
@@ -29,6 +28,8 @@ class Truck {
     time_start = _time_orig;
     time_dest = _time_dest;
 
+    day_orig = _day_orig;
+    day_dest = _day_dest;
 
     sec = sec_orig;
     min = min_orig;
@@ -47,6 +48,7 @@ class Truck {
 
 
   void display() {
+
     if (checkTime_orig(parseInt(split(time_start, ":")[0]), parseInt(split(time_start, ":")[1]), parseInt(split(time_start, ":")[2])
       )) {
       fill(255, 255, 50, 200);
@@ -59,7 +61,6 @@ class Truck {
       line(x_orig, y_orig, x_dest, y_dest);
       fill(255, 0, 255, 200);  //puple
       //ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
-     
       image(finish, x_dest, y_dest, 6*zoom, 6*zoom);
       //rotate(
     }
@@ -106,7 +107,7 @@ class Truck {
     hour *= 3600;
     min *= 60;
 
-    check_totalsec = hour+min+sec;
+    check_totalsec = hour+min+sec ;
 
     if (cur_totalsec >= check_totalsec) {
       return true;
@@ -127,6 +128,12 @@ class Truck {
     int cur_totalsec;
     int check_totalsec;
 
+    int sig_day= 0;
+
+    if ( day_dest > day_orig) {
+      sig_day *= (day_dest-day_orig)*24*3600;
+    }
+
     cur_hour *=3600;
     cur_min *=60;
     cur_totalsec = cur_hour + cur_min + cur_sec;
@@ -134,7 +141,7 @@ class Truck {
     hour *= 3600;
     min *= 60;
 
-    check_totalsec = hour+min+sec;
+    check_totalsec = hour+min+sec + sig_day;
 
     if (cur_totalsec >= check_totalsec) {
       return true;

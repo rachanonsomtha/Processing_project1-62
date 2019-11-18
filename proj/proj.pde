@@ -25,7 +25,7 @@ int screenH = 512;
 int sec=0;
 int min = 0;
 int hour=0;
-int date =0;
+int date =14;
 Truck [] truck = new Truck[count];
 
 String url;
@@ -39,6 +39,14 @@ int [] min_dest= new int[count];
 int [] hour_dest= new int[count];
 int [] sec_dest= new int[count];
 
+int [] day_dest= new int[count];
+int [] month_dest= new int[count];
+int [] year_dest= new int[count];
+
+int [] day_orig= new int[count];
+int [] month_orig= new int[count];
+int [] year_orig= new int[count];
+
 //float c_lat = 51.213890;
 //float c_lon = -102.462776;
 //float c_lon_temp;
@@ -50,6 +58,7 @@ float c_lat_temp = -110;
 
 
 boolean _isInit = true;
+float r =0;
 
 
 float mercX(float lon) {
@@ -77,6 +86,10 @@ public int _sec () {
 }
 public int _hour () {
   return hour;
+}
+
+public float _rotate() {
+  return r;
 }
 
 
@@ -189,7 +202,7 @@ void keyPressed() {
     x_dest = mercX(lon_dest) - cx;
     y_dest = mercY(lat_dest) - cy;
 
-    truck[i] = new Truck(lat_orig, lat_dest, lon_orig, lon_dest, zoom, c_lat_temp, c_lon_temp, time_orig, hour_orig[i], min_orig[i], sec_orig[i], time_dest, hour_dest[i], min_dest[i], sec_dest[i]);
+    truck[i] = new Truck(lat_orig, lat_dest, lon_orig, lon_dest, zoom, c_lat_temp, c_lon_temp, time_orig, hour_orig[i], min_orig[i], sec_orig[i], time_dest, hour_dest[i], min_dest[i], sec_dest[i], day_orig[i], day_dest[i]);
 
     //print("eiei");
     //println(x, y);
@@ -247,6 +260,16 @@ void draw() {
       String time_orig = row.getString("time_orig");
       String time_dest = row.getString("time_dest");
 
+      day_orig[i] = int(split(date_orig, "/")[0]);
+      month_orig[i] = int(split(date_orig, "/")[1]);
+      year_orig[i] = int(split(date_orig, "/")[2]);
+
+      day_dest[i] = int(split(date_dest, "/")[0]);
+      month_dest[i] = int(split(date_dest, "/")[1]);
+      year_dest[i] = int(split(date_dest, "/")[2]);
+
+
+
       //String[] sa2 = append(sa1, "MA"); 
 
       hour_orig[i] =  int(split(time_orig, ":")[0]);
@@ -278,7 +301,8 @@ void draw() {
       x_dest = mercX(lon_dest) - cx;
       y_dest = mercY(lat_dest) - cy;
 
-      truck[i] = new Truck(lat_orig, lat_dest, lon_orig, lon_dest, zoom, c_lat_temp, c_lon_temp, time_orig, hour_orig[i], min_orig[i], sec_orig[i], time_dest, hour_dest[i], min_dest[i], sec_dest[i]);
+      truck[i] = new Truck(lat_orig, lat_dest, lon_orig, lon_dest, zoom, c_lat_temp, c_lon_temp, time_orig, hour_orig[i], 
+        min_orig[i], sec_orig[i], time_dest, hour_dest[i], min_dest[i], sec_dest[i], day_orig[i], day_dest[i] );
 
       //print("eiei");
 
@@ -296,12 +320,12 @@ void draw() {
   //println(c_lat_temp);
   //println(c_lon_temp);
   textFont(f);
-  text("Day: "+ (date +1)+"\n"+ hour+ ":" + min +":"+ sec, -500, 180);
+  text("Day: "+ date+"\n"+ hour+ ":" + min +":"+ sec, -500, 180);
   for (int i =0; i<truck.length; i++) {
     truck[i].display();
     truck[i].update();
     //print("eeeeee");
   }  
-
+  r+=0.2;
   //}
 }
