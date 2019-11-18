@@ -7,8 +7,10 @@ class Truck {
   float x, y;
   float cx, cy;
   String time_start;
+  int sec, min, hour;
 
-  Truck (float _lat_orig, float _lat_dest, float _lon_orig, float _lon_dest, int _zoom, float _c_lat_temp, float _c_lon_temp, String _time_orig) {
+  Truck (float _lat_orig, float _lat_dest, float _lon_orig, float _lon_dest, int _zoom, float _c_lat_temp, float _c_lon_temp, String _time_orig
+    , int hour_orig, int min_orig, int sec_orig) {
     lat_orig = _lat_orig;
     lon_orig = _lon_orig;
     lat_dest = _lat_dest;
@@ -17,23 +19,28 @@ class Truck {
     c_lat_temp = _c_lat_temp;
     c_lon_temp = _c_lon_temp;
     time_start = _time_orig;
+
+    sec = sec_orig;
+    min = min_orig;
+    hour = hour_orig;
   }
 
 
 
 
   void display() {
-    //if (checkTime()) {
+    if (checkTime(parseInt(split(time_start, ":")[0]), parseInt(split(time_start, ":")[1]), parseInt(split(time_start, ":")[2])
+      )) {
       fill(255, 255, 50, 200);
-      stroke(255, 0, 255);
+      stroke(255, 255, 255);
       strokeWeight(5/(zoom/0.8));
-      line(x_orig, y_orig, x_dest, y_dest);
+      //line(x_orig, y_orig, x_dest, y_dest);
 
       ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
-      fill(255, 0, 255, 200);  //puple
+      //fill(255, 0, 255, 200);  //puple
 
-      ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
-    //}
+      //ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
+    }
   }
 
   void update () {
@@ -50,18 +57,15 @@ class Truck {
   }
 
 
-  boolean checkTime (double hour, double min, double sec, String checker) {
-    double _hour;
-    double _min;
-    double _sec;
-
-    _hour =  Double.parseDouble(split(checker, ":")[0]);
-    _min =  Double.parseDouble(split(checker, ":")[1]);
-    _sec =   Double.parseDouble(split(checker, ":")[2]);
-
-    if (hour == _hour && min ==_min && sec == _sec) {
+  boolean checkTime (int hour, int min, int sec) {
+    String check = Integer.toString(hour)+ Integer.toString(min) + Integer.toString(sec);
+    String now = Integer.toString(_hour())+ Integer.toString(_min()) + Integer.toString(_sec());
+    println(check, now);
+    if (parseInt(now) >= parseInt(check)) {
       return true;
-    } else return false;
+    } else {
+      return false;
+    }
   }
 
 
