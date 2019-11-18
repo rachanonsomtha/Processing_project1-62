@@ -189,7 +189,7 @@ void keyPressed() {
     x_dest = mercX(lon_dest) - cx;
     y_dest = mercY(lat_dest) - cy;
 
-    truck[i] = new Truck(lat_orig, lat_dest, lon_orig, lon_dest, zoom, c_lat_temp, c_lon_temp, time_orig, hour_orig[i], min_orig[i], sec_orig[i]);
+    truck[i] = new Truck(lat_orig, lat_dest, lon_orig, lon_dest, zoom, c_lat_temp, c_lon_temp, time_orig, hour_orig[i], min_orig[i], sec_orig[i], time_dest, hour_dest[i], min_dest[i], sec_dest[i]);
 
     //print("eiei");
     //println(x, y);
@@ -278,7 +278,7 @@ void draw() {
       x_dest = mercX(lon_dest) - cx;
       y_dest = mercY(lat_dest) - cy;
 
-      truck[i] = new Truck(lat_orig, lat_dest, lon_orig, lon_dest, zoom, c_lat_temp, c_lon_temp, time_orig, hour_orig[i], min_orig[i], sec_orig[i]);
+      truck[i] = new Truck(lat_orig, lat_dest, lon_orig, lon_dest, zoom, c_lat_temp, c_lon_temp, time_orig, hour_orig[i], min_orig[i], sec_orig[i], time_dest, hour_dest[i], min_dest[i], sec_dest[i]);
 
       //print("eiei");
 

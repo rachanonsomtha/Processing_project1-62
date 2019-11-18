@@ -7,10 +7,13 @@ class Truck {
   float x, y;
   float cx, cy;
   String time_start;
+  String time_dest;
   int sec, min, hour;
+  int _sec, _min, _hour;
+
 
   Truck (float _lat_orig, float _lat_dest, float _lon_orig, float _lon_dest, int _zoom, float _c_lat_temp, float _c_lon_temp, String _time_orig
-    , int hour_orig, int min_orig, int sec_orig) {
+    , int hour_orig, int min_orig, int sec_orig, String _time_dest, int hour_dest, int min_dest, int sec_dest) {
     lat_orig = _lat_orig;
     lon_orig = _lon_orig;
     lat_dest = _lat_dest;
@@ -19,10 +22,16 @@ class Truck {
     c_lat_temp = _c_lat_temp;
     c_lon_temp = _c_lon_temp;
     time_start = _time_orig;
+    time_dest = _time_dest;
+
 
     sec = sec_orig;
     min = min_orig;
     hour = hour_orig;
+
+    _sec = sec_dest;
+    _min = min_dest;
+    _hour = hour_dest;
     //println(hour + " "+ min +" " + sec);
   }
 
@@ -35,12 +44,12 @@ class Truck {
       fill(255, 255, 50, 200);
       stroke(255, 255, 255);
       strokeWeight(5/(zoom/0.8));
-      //line(x_orig, y_orig, x_dest, y_dest);
-
       ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
-      //fill(255, 0, 255, 200);  //puple
-
-      //ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
+    }
+    if (checkTime_dest(parseInt(split(time_dest, ":")[0]), parseInt(split(time_dest, ":")[1]), parseInt(split(time_dest, ":")[2]))) {
+      line(x_orig, y_orig, x_dest, y_dest);
+      fill(255, 0, 255, 200);  //puple
+      ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
     }
   }
 
@@ -91,16 +100,33 @@ class Truck {
       return true;
     } else return false;
 
-
-
-
-
-
     //if (parseInt(now) >= parseInt(check)) {
     //  return true;
     //} else {
     //  return false;
     //}
+  }
+
+  boolean checkTime_dest(int hour, int min, int sec) {
+    int cur_hour = _hour();
+    int cur_min = _min();
+    int cur_sec = _sec();
+
+    int cur_totalsec;
+    int check_totalsec;
+
+    cur_hour *=3600;
+    cur_min *=60;
+    cur_totalsec = cur_hour + cur_min + cur_sec;
+
+    hour *= 3600;
+    min *= 60;
+
+    check_totalsec = hour+min+sec;
+
+    if (cur_totalsec >= check_totalsec) {
+      return true;
+    } else return false;
   }
 
 
