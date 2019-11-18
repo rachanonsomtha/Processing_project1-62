@@ -1,36 +1,67 @@
 class Truck {
 
-  float x_orig, y_orig, x_dest, y_dest;
+  float lat_orig, lon_orig, lat_dest, lon_dest;
+  float c_lon_temp, c_lat_temp;
   int zoom;
+  float vx, vy;
+  float x, y;
+  float cx, cy;
+  String time_start;
 
-  Truck (float _x_orig, float _y_orig, float _x_dest, float _y_dest, int _zoom) {
-    x_orig = _x_orig;
-    y_orig = _y_orig;
-    x_dest = _x_dest;
-    y_dest = _y_dest;
+  Truck (float _lat_orig, float _lat_dest, float _lon_orig, float _lon_dest, int _zoom, float _c_lat_temp, float _c_lon_temp, String _time_orig) {
+    lat_orig = _lat_orig;
+    lon_orig = _lon_orig;
+    lat_dest = _lat_dest;
+    lon_dest = _lon_dest;
     zoom = _zoom;
+    c_lat_temp = _c_lat_temp;
+    c_lon_temp = _c_lon_temp;
+    time_start = _time_orig;
   }
 
 
-  float vx, vy;
-  float x, y;
+
 
   void display() {
+    //if (checkTime()) {
+      fill(255, 255, 50, 200);
+      stroke(255, 0, 255);
+      strokeWeight(5/(zoom/0.8));
+      line(x_orig, y_orig, x_dest, y_dest);
 
-    fill(255, 255, 50, 200);
-    stroke(255, 0, 255);
-    strokeWeight(5/(zoom/0.8));
-    line(x_orig, y_orig, x_dest, y_dest);
+      ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
+      fill(255, 0, 255, 200);  //puple
 
-    ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
-    //    fill(255, 0, 255, 200); 
-
-    ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
+      ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
+    //}
   }
 
   void update () {
 
-    x_orig += 1;
+    cx = mercX(c_lat_temp);
+    cy = mercY(c_lon_temp);
+    //println(c_lat_temp);
+    //println(c_lon_temp);
+
+    x_orig = mercX(lon_orig) - cx;
+    y_orig = mercY(lat_orig) - cy;
+    x_dest = mercX(lon_dest) - cx;
+    y_dest = mercY(lat_dest) - cy;
+  }
+
+
+  boolean checkTime (double hour, double min, double sec, String checker) {
+    double _hour;
+    double _min;
+    double _sec;
+
+    _hour =  Double.parseDouble(split(checker, ":")[0]);
+    _min =  Double.parseDouble(split(checker, ":")[1]);
+    _sec =   Double.parseDouble(split(checker, ":")[2]);
+
+    if (hour == _hour && min ==_min && sec == _sec) {
+      return true;
+    } else return false;
   }
 
 
