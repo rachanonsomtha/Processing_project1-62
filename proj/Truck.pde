@@ -1,33 +1,19 @@
 class Truck {
 
-  float lat_dest;
-  float lat_orig;
-  float lon_orig;
-  float lon_dest;
-  int zoom;
-  float cx, cy;
+  float x_orig, y_orig, x_dest, y_dest;
 
-  Truck (float _lat_orig, float _lon_orig, float _lat_dest, float _lon_dest, int _zoom, float _cx, float _cy) {
-
-    lat_orig = _lat_orig;
-    lon_orig = _lon_orig;
-    lat_dest = _lat_dest;
-    lon_dest = _lon_dest;
-    zoom = _zoom;
-    cx = _cx;
-    cy = _cy;
+  Truck (float _x_orig, float _y_orig, float _x_dest, float _y_dest) {
+    x_orig = _x_orig;
+    y_orig = _y_orig;
+    x_dest = _x_dest;
+    y_dest = _y_dest;
   }
 
 
+  float vx, vy;
+  float x, y;
+
   void display() {
-
-
-    x_orig = mercX(lon_orig) - cx;
-    y_orig = mercY(lat_orig) - cy;
-
-
-    x_dest = mercX(lon_dest) - cx;
-    y_dest = mercY(lat_dest) - cy;
 
     fill(255, 255, 50, 200);
     stroke(255, 0, 255);
@@ -39,12 +25,32 @@ class Truck {
 
     ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
   }
-  
-  //void update () {
-    
-  
-  //}
 
+  void update () {
+
+    x_orig+= 1 ;
+  }
+
+
+
+  void move() {
+    float dx = x_dest - x_orig;
+    float dy = y_dest - y_orig;
+
+    float d = sqrt(dx*dx + dy*dy);
+    //if (d < 1) d = 1;
+    float m = randomGaussian() * 16;
+    float f = sin(d * 0.04) * m / d;
+
+
+    vx = vx * 0.5 + f * dx;
+    vy = vy * 0.5 + f * dy;
+
+    x += vx;
+    y += vy;
+    fill(255, 0, 255, 200);
+    ellipse(x, y, 4, 4);
+  }
 
 
   float mercX(float lon) {
