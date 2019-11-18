@@ -16,7 +16,7 @@ int zoom = 3;
 float cx, cy;
 float lat, lon;
 float x_orig, y_orig, x_dest, y_dest, lat_orig, lon_orig, lat_dest, lon_dest;
-int count = 500;
+int count = 50;
 
 int screenW = 1024;
 int screenH = 512;
@@ -201,7 +201,6 @@ void keyPressed() {
     truck[i].update();
     //print("eeeeee");
   }  
-
   //line(x_orig, y_orig, x_dest, y_dest);
 }
 
@@ -250,12 +249,12 @@ void draw() {
 
       //String[] sa2 = append(sa1, "MA"); 
 
-      hour_orig[i] =  parseInt(split(time_orig, ":")[0]);
-      min_orig[i] =  parseInt(split(time_orig, ":")[1]);
-      sec_orig[i] =   parseInt(split(time_orig, ":")[2]);
-      hour_dest[i] =   parseInt(split(time_dest, ":")[0]);
-      min_dest[i] =   parseInt(split(time_dest, ":")[1]);
-      sec_dest[i] =  parseInt(split(time_dest, ":")[2]);
+      hour_orig[i] =  int(split(time_orig, ":")[0]);
+      min_orig[i] =  int(split(time_orig, ":")[1]);
+      sec_orig[i] =   int(split(time_orig, ":")[2]);
+      hour_dest[i] =   int(split(time_dest, ":")[0]);
+      min_dest[i] =   int(split(time_dest, ":")[1]);
+      sec_dest[i] =  int(split(time_dest, ":")[2]);
 
       //println(sec_orig[0]);
 
@@ -289,6 +288,8 @@ void draw() {
     }
     //println(truck);
     //image(mapImg, 0, 0);
+    //println(truck.length);
+
     _isInit = false;
   }
   image(mapImg, 0, 0);

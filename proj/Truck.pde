@@ -23,13 +23,14 @@ class Truck {
     sec = sec_orig;
     min = min_orig;
     hour = hour_orig;
+    //println(hour + " "+ min +" " + sec);
   }
 
 
 
 
   void display() {
-    if (checkTime(parseInt(split(time_start, ":")[0]), parseInt(split(time_start, ":")[1]), parseInt(split(time_start, ":")[2])
+    if (checkTime_orig(parseInt(split(time_start, ":")[0]), parseInt(split(time_start, ":")[1]), parseInt(split(time_start, ":")[2])
       )) {
       fill(255, 255, 50, 200);
       stroke(255, 255, 255);
@@ -57,15 +58,49 @@ class Truck {
   }
 
 
-  boolean checkTime (int hour, int min, int sec) {
-    String check = Integer.toString(hour)+ Integer.toString(min) + Integer.toString(sec);
-    String now = Integer.toString(_hour())+ Integer.toString(_min()) + Integer.toString(_sec());
-    println(check, now);
-    if (parseInt(now) >= parseInt(check)) {
+  boolean checkTime_orig (int hour, int min, int sec) {
+    //String check = Integer.toString(hour)+ Integer.toString(min) + Integer.toString(sec);
+    //String now = Integer.toString(_hour())+ Integer.toString(_min()) + Integer.toString(_sec());
+    //println(check, now);
+    int cur_hour = _hour();
+    int cur_min = _min();
+    int cur_sec = _sec();
+
+    int cur_totalsec;
+    int check_totalsec;
+
+    boolean get;
+    println("-----------time-----------");
+    println(hour + ":" + min + ":" + sec + " " +hour + ":" + min + ":" + sec );
+    //if (cur_hour >= hour || cur_min >= min || cur_sec >= sec) {
+    //  return true;
+    //} else {
+    //  return false;
+    //}
+
+    cur_hour *=3600;
+    cur_min *=60;
+    cur_totalsec = cur_hour + cur_min + cur_sec;
+
+    hour *= 3600;
+    min *= 60;
+
+    check_totalsec = hour+min+sec;
+
+    if (cur_totalsec >= check_totalsec) {
       return true;
-    } else {
-      return false;
-    }
+    } else return false;
+
+
+
+
+
+
+    //if (parseInt(now) >= parseInt(check)) {
+    //  return true;
+    //} else {
+    //  return false;
+    //}
   }
 
 
