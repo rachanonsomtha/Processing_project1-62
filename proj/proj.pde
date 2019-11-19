@@ -9,6 +9,8 @@ import java.util.List;
 
 Table table;
 PImage mapImg;
+PImage truckPoster;
+PImage _package;
 PFont f;
 int fontSize = 40;
 
@@ -29,6 +31,10 @@ int date =14;
 Truck [] truck = new Truck[count];
 
 String url;
+
+
+int otw;
+int fin;
 
 
 int [] min_orig = new int[count];
@@ -77,6 +83,7 @@ float mercY(float lat) {
 }
 
 
+
 public int _min () {
   return min;
 }
@@ -99,7 +106,7 @@ void setup() {
 
   f = createFont("Arial", fontSize);
   //size (1024, 512);
-  surface.setSize(screenW, screenH);
+  size(1024, 512, P3D);
   table = new Table();
 
   //if (c_lon < - width/2) {
@@ -119,6 +126,8 @@ void setup() {
 
   url ="https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/"+c_lat_temp +","+c_lon_temp+"," +zoom +","+"0,0/"+screenW+"x"+screenH+"?access_token=pk.eyJ1IjoicmFjaGFub24iLCJhIjoiY2szMm1jMWd0MGR5cjNpbm9obXI0MXN2NSJ9.X4wUXhYDgDP_Rvcf2hq7eA";
   mapImg = loadImage(url, "png");
+  truckPoster = loadImage("truck_poster.png");
+  _package = loadImage("pakage.png");
   //image(mapImg, 0, 0);
 }
 
@@ -228,11 +237,11 @@ void draw() {
   frameRate(1);
 
 
-  if (sec ==60) {
+  if (sec ==59) {
     min++;
     sec =0;
   }
-  if (min==60) {
+  if (min==59) {
     hour++;
     min =0;
   }
@@ -320,12 +329,22 @@ void draw() {
   //println(c_lat_temp);
   //println(c_lon_temp);
   textFont(f);
+  pushMatrix();
+  translate(-500, 180);
+  //rotateY(radians(r));
+  imageMode(CENTER);
+  //rotate(radians(r));
+  image(truckPoster, 30, -60, 50, 50);
+  //text(otw, 30, -60);
+  image(_package, 100, -60, 50, 50);
+  //text(fin, 100, -60);
+  popMatrix();
   text("Day: "+ date+"\n"+ hour+ ":" + min +":"+ sec, -500, 180);
   for (int i =0; i<truck.length; i++) {
     truck[i].display();
     truck[i].update();
     //print("eeeeee");
   }  
-  r+=0.2;
+  r+=2;
   //}
 }

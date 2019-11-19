@@ -14,6 +14,10 @@ class Truck {
   int day_orig, day_dest;
   PImage start;
   PImage finish;
+  boolean destroy = true;
+
+
+
 
 
   Truck (float _lat_orig, float _lat_dest, float _lon_orig, float _lon_dest, int _zoom, float _c_lat_temp, float _c_lon_temp, String _time_orig
@@ -50,21 +54,34 @@ class Truck {
   void display() {
 
     if (checkTime_orig(parseInt(split(time_start, ":")[0]), parseInt(split(time_start, ":")[1]), parseInt(split(time_start, ":")[2])
-      )) {
+      ) && !checkTime_dest(parseInt(split(time_dest, ":")[0]), parseInt(split(time_dest, ":")[1]), parseInt(split(time_dest, ":")[2])) && destroy) {
       fill(255, 255, 50, 200);
       stroke(255, 255, 255);
       strokeWeight(5/(zoom/0.8));
       //ellipse(x_orig, y_orig, 2*zoom, 2*zoom);
       image(start, x_orig, y_orig, 6*zoom, 6*zoom);
     }
-    if (checkTime_dest(parseInt(split(time_dest, ":")[0]), parseInt(split(time_dest, ":")[1]), parseInt(split(time_dest, ":")[2]))) {
+    if (checkTime_dest(parseInt(split(time_dest, ":")[0]), parseInt(split(time_dest, ":")[1]), parseInt(split(time_dest, ":")[2])) &&(!cur_check())) {
       line(x_orig, y_orig, x_dest, y_dest);
       fill(255, 0, 255, 200);  //puple
       //ellipse(x_dest, y_dest, 2*zoom, 2*zoom);
+      //rotateY(radians(_rotate()));
       image(finish, x_dest, y_dest, 6*zoom, 6*zoom);
       //rotate(
     }
   }
+
+  boolean cur_check () {
+
+    int dest_sec = _sec+(_min*60) + (_hour*60);
+
+    int hour = _hour()*3600;
+    int min = _min()*60;
+    int total = hour+min+_sec();
+
+    return (total - dest_sec >= 10);
+  }
+
 
   void update () {
 
@@ -130,6 +147,8 @@ class Truck {
 
     int sig_day= 0;
 
+
+
     if ( day_dest > day_orig) {
       sig_day *= (day_dest-day_orig)*24*3600;
     }
@@ -143,9 +162,14 @@ class Truck {
 
     check_totalsec = hour+min+sec + sig_day;
 
-    if (cur_totalsec >= check_totalsec) {
+    if (cur_totalsec >= check_totalsec && (destroy == true)) {
       return true;
-    } else return false;
+    } 
+    if (cur_totalsec - check_totalsec >= 10 ) {
+      destroy = true;
+      //return false;
+    }  
+    return false;
   }
 
 
